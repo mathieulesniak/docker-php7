@@ -6,7 +6,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y && apt-get install -y --no-
 
 # Set Locale to fr_FR.UTF8
 RUN cp /etc/locale.gen /etc/locale.gen.sav \
-&& echo fr_FR.UTF8 > /etc/locale.gen \
+&& echo "fr_FR.UTF-8 UTF-8" > /etc/locale.gen \
 && locale-gen
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -20,8 +20,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     libpng-dev \
     libxpm-dev \
     unzip
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-xpm-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd
-RUN docker-php-ext-install -j$(nproc) intl mbstring  pdo_mysql tokenizer zip exif xml json mysqli opcache
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-xpm-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd && docker-php-ext-install -j$(nproc) intl mbstring  pdo_mysql tokenizer zip exif xml json mysqli opcache
 
 # opcode recommended settings
 RUN { \
@@ -37,8 +36,8 @@ RUN { \
 RUN git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
   && cd /usr/src/php/ext/memcached && git checkout -b php7 origin/php7 \
   && docker-php-ext-configure memcached \
-  && docker-php-ext-install memcached 
-RUN apt-get -y install libmagickwand-dev --no-install-recommends && pecl install imagick redis mcrypt-1.0.1 && docker-php-ext-enable imagick redis mcrypt
+  && docker-php-ext-install memcached \
+  && apt-get -y install libmagickwand-dev --no-install-recommends && pecl install imagick redis mcrypt-1.0.1 && docker-php-ext-enable imagick redis mcrypt
 
 # Composer
 RUN cd /tmp/ && \
