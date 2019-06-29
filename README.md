@@ -4,6 +4,7 @@
 
 Locale FR
 
+- pnctl
 - gd
 - intl
 - mcrypt
@@ -20,6 +21,6 @@ Locale FR
 - opcache
 - memcached
 
-+ ssmtp
+* ssmtp
 
 composer install
